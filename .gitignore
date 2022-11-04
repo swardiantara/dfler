@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# After training
+/outputs
+/cache_dir
+/runs
+.gitignore
