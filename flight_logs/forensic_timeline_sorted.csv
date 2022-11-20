@@ -1,0 +1,174 @@
+timestamp,message
+2018-06-15 11:07:46,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:08:00,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:08:02,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:08:15,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:08:19,Cannot Takeoff in Travel Mode. Exit Travel Mode.
+2018-06-15 11:08:38,Cannot Takeoff in Travel Mode. Exit Travel Mode.
+2018-06-15 11:08:48,Cannot Takeoff in Travel Mode. Exit Travel Mode.
+2018-06-15 11:09:09,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:09:16,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:09:18,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:09:26,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:09:32,Cannot Takeoff in Travel Mode. Exit Travel Mode.
+2018-06-15 11:10:09,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:10:20,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:11:30,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:11:54,Cannot Takeoff in Travel Mode. Exit Travel Mode.
+2018-06-15 11:12:56,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:14:15,Take off and retry this function.
+2018-06-15 11:14:20,Cannot Takeoff in Travel Mode. Exit Travel Mode.
+2018-06-15 11:14:56,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:14:59,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:15:12,Take off in P-Mode
+2018-06-15 11:15:57,Cannot Takeoff in Travel Mode. Exit Travel Mode.
+2018-06-15 11:16:38,Landing Gear Lowering
+2018-06-15 11:16:41,Landing Gear Lowered
+2018-06-15 11:16:44,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:17:46,Return-to-Home Altitude:65FT
+2018-06-15 11:18:23,Landing
+2018-06-15 11:18:40,Take off in P-Mode
+2018-06-15 11:19:03,Flight Mode Set to Attitude
+2018-06-15 11:19:03,Set Flight Mode to GPS to fly safe
+2018-06-15 11:19:32,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:19:37,Take off and retry this function.
+2018-06-15 11:19:41,Flight Mode Set to Attitude
+2018-06-15 11:19:41,Set Flight Mode to GPS to fly safe
+2018-06-15 11:19:44,Take off and retry this function.
+2018-06-15 11:19:49,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:28:01,Take off in P-Mode
+2018-06-15 11:29:52,Take off in P-Mode
+2018-06-15 11:32:10,Take off in P-Mode
+2018-06-15 11:32:24,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:32:34,"Aircraft is in Attitude mode, so that it will not hover. Please fly with caution."
+2018-06-15 11:32:40,Landing Gear Raising
+2018-06-15 11:32:43,Landing Gear Paused
+2018-06-15 17:17:46,Data Recorder File Index is 5.
+2018-06-15 17:17:47,RTH Altitude: 65FT.
+2018-06-15 17:18:23,Landing.
+2018-06-19 00:00:30,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:00:49,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:01:27,High wind velocity. Fly with caution and land in a safe place ASAP.
+2018-06-19 00:01:49,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.; High wind velocity. Fly with caution and land in a safe place ASAP.
+2018-06-19 00:01:58,WarningThe remaining battery is only enough for RTH. Return home now.
+2018-06-19 00:02:01,Low power. Returning home.
+2018-06-19 00:02:02,RTH: Preascending.
+2018-06-19 00:02:02,RTH: Heading alignment.
+2018-06-19 00:02:05,RTH: Ascending to RTH altitude.
+2018-06-19 00:02:10,RTH: Cruise.
+2018-06-19 00:03:01,Obstacle Sensing will be disabled when aircraft is landing. Fly with caution.
+2018-06-19 00:03:03,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:06,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:10,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:10,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:11,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:11,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:13,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:14,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:14,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:17,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:17,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:17,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:20,Precision LandingCorrecting Landing Position.
+2018-06-19 00:03:22,Precision LandingCorrecting Landing Position.
+2018-06-19 00:08:28,Data Recorder File Index is 4.
+2018-06-19 00:08:30,Home Point Updated.
+2018-06-19 00:08:51,Home Point recorded. Return-to-Home Altitude:98FT.
+2018-06-19 00:09:20,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:10:42,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:10:58,Weak signal. Avoid blocking the antennas and keep the antennas parallel to and facing toward the aircraft during flight.; Downlink Lost.
+2018-06-19 00:11:02,Downlink Restored (after 0m 5.6s).
+2018-06-19 00:11:04,Downlink Lost.
+2018-06-19 00:11:09,Downlink Restored (after 0m 5.8s).
+2018-06-19 00:11:09,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.; Downlink Lost.
+2018-06-19 00:11:18,Downlink Lost.
+2018-06-19 00:11:31,Downlink Lost.
+2018-06-19 00:11:32,Downlink Restored (after 0m 11s).
+2018-06-19 00:11:32,Downlink Restored (after 0m 2.2s).
+2018-06-19 00:12:11,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:12:32,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:12:56,High wind velocity. Fly with caution and land in a safe place ASAP.
+2018-06-19 00:13:14,Forward Obstacle Sensing is not functioning.
+2018-06-19 00:13:15,Attitude is too large.Â Backward Obstacle Sensing is not functioning.
+2018-06-19 00:13:36,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:13:56,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:14:02,High wind velocity. Fly with caution and land in a safe place ASAP.
+2018-06-19 00:14:13,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:14:49,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 00:15:43,Obstacle Sensing will be disabled when aircraft is landing. Fly with caution.
+2018-06-19 00:34:57,Data Recorder File Index is 2.
+2018-06-19 00:34:59,Home Point Updated.
+2018-06-19 00:34:59,Home Point recorded. Return-to-Home Altitude:98FT.
+2018-06-19 00:35:19,Downlink Lost.
+2018-06-19 00:35:28,Downlink Restored (after 0m 11.3s).
+2018-06-19 00:39:36,Aircraft is close to the Home Point. Initiating Return to Home will now trigger Auto Landing.
+2018-06-19 00:57:21,Data Recorder File Index is 5.
+2018-06-19 00:57:23,Home Point Updated.
+2018-06-19 00:57:23,Home Point recorded. Return-to-Home Altitude:98FT.
+2018-06-19 00:58:19,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 14:05:36,Backward Obstacle Sensing is not functioning.
+2018-06-19 14:05:39,Backward Obstacle Sensing is not functioning.
+2018-06-19 14:05:44,Backward Obstacle Sensing is not functioning.
+2018-06-19 14:05:44,Ambient Light is too weak.
+2018-06-19 14:08:51,Home Point recorded. Return-to-Home Altitude:98FT
+2018-06-19 14:09:20,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 14:10:57,Weak signal. Avoid blocking the antennas and keep the antennas parallel to and facing toward the aircraft during flight.
+2018-06-19 14:12:56,High wind velocity. Fly with caution and land in a safe place ASAP.
+2018-06-19 14:13:14,Attitude is too large.Â Backward Obstacle Sensing is not functioning.
+2018-06-19 14:13:14,Forward Obstacle Sensing is not functioning.
+2018-06-19 14:15:43,Obstacle Sensing will be disabled when aircraft is landing. Fly with caution.
+2018-06-19 14:16:15,Ambient Light is too weak.
+2018-06-19 14:16:15,Forward Obstacle Sensing is not functioning.
+2018-06-19 14:29:57,Home Point Recorded. RTH Altitude:Â  30m.
+2018-06-19 14:30:43,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:30:53,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:32:58,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:33:09,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:33:36,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:33:58,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:34:30,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:35:19,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:35:29,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:35:55,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:35:58,High wind velocity. Fly with caution and land in a safe place ASAP.
+2018-06-19 14:37:06,Remote Controller Right Dial Locked. Lightly press it to adjust.
+2018-06-19 14:37:29,Max Flight Distance Reached. Adjust in Main Controller Settings if necessary.
+2018-06-19 14:37:46,Weak signal. Adjust antenna and avoid signal block.
+2018-06-19 14:45:08,Home Point Recorded. RTH Altitude:Â  30m.
+2018-06-19 14:47:45,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:48:11,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:51:37,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:52:01,High wind velocity. Fly with caution and land in a safe place ASAP.
+2018-06-19 14:52:17,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:52:29,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:53:29,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 14:57:23,Home Point recorded. Return-to-Home Altitude:98FT
+2018-06-19 14:58:19,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
+2018-06-19 15:01:27,High wind velocity. Fly with caution and land in a safe place ASAP.
+2018-06-19 15:01:58,The remaining battery is only enough for RTH. Return home now.
+2018-06-19 15:01:58,Warning
+2018-06-19 15:02:00,Low power. Returning home.
+2018-06-19 15:03:00,Obstacle Sensing will be disabled when aircraft is landing. Fly with caution.
+2018-06-19 15:03:02,Correcting Landing Position
+2018-06-19 15:03:02,Precision Landing
+2018-06-19 15:03:09,Precision Landing
+2018-06-19 15:03:09,Correcting Landing Position
+2018-06-19 15:03:16,Correcting Landing Position
+2018-06-19 15:03:16,Precision Landing
+2018-06-19 15:03:22,Precision Landing
+2018-06-19 15:03:22,Correcting Landing Position
+2018-06-19 15:04:07,Forward Obstacle Sensing is not functioning.
+2018-06-19 15:04:07,Ambient Light is too weak.
+2018-06-19 15:04:09,Backward Obstacle Sensing is not functioning.
+2018-06-19 15:04:09,Ambient Light is too weak.
+2018-06-19 15:24:01,Home Point Recorded. RTH Altitude:Â  30m.
+2018-06-19 15:24:42,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 15:25:31,Mobile device CPU fully loaded. Related performance will be affected.
+2018-06-19 15:30:21,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 15:30:46,Fly with caution and ensure the aircraft remains within your line of sight.
+2018-06-19 15:33:55,Weak GPS signal. Aircraft is in Attitude mode and hovering may be unstable. Fly with caution.
+2018-06-19 15:34:06,Weak GPS signal. Aircraft is in Attitude mode and hovering may be unstable. Fly with caution.
+2018-06-19 15:34:25,Weak GPS signal. Aircraft is in Attitude mode and hovering may be unstable. Fly with caution.
+2018-06-19 15:34:39,Home Point recorded. Return-to-Home Altitude:98FT
+2018-06-19 15:34:59,Home Point recorded. Return-to-Home Altitude:98FT
+2018-06-19 15:39:36,Aircraft is close to the Home Point. Initiating Return to Home will now trigger Auto Landing.
