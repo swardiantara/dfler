@@ -1,0 +1,4 @@
+TraceModuleExtreme::CSILog:fEnabled=0x0
+TraceModuleExtreme::CSILog:fHistory=0xffffffff
+BootTime=0x5b2953b4
+CommCenterStartsThisBoot=0x1
