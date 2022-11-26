@@ -1,6 +1,9 @@
 import requests
 import time
 import os
+import json
+from tqdm import tqdm
+from datetime import datetime
 from os import system, name
 from parse import read_android_log, read_ios_log, construct_timeline
 from simpletransformers.ner import NERModel
@@ -14,6 +17,8 @@ def query(payload):
 	return response.json()
 
 
+output_dir = None
+
 def clear_screen():
     # for windows
     if name == 'nt':
@@ -21,7 +26,6 @@ def clear_screen():
     # for mac and linux(here, os.name is 'posix')
     else:
         _ = system('clear')
-
 
 def menu():
     clear_screen()
@@ -39,6 +43,13 @@ def menu():
 
 
 def main():
+    now = datetime.now()
+    now = now.strftime("%d%m%Y_%H%M%S")
+    output_dir = os.path.join("./result", now)
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     start = menu()
     if start == '0':
         print("Exit program...")
@@ -73,6 +84,9 @@ def main():
                     else:
                         ios_logs.append(files)
             found_files = android_logs + ios_logs
+            # save to .json file
+            with open('./flight_logs/raw_list.json', 'w') as file:
+                json.dump(found_files, file)
             if(len(found_files) == 0):
                 print('No found files in the evidence folder!')
                 time.sleep(1)
@@ -94,7 +108,7 @@ def main():
             full_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'flight_logs')
 
             # Construct the forensic timeline from parsed flight log
-            print(full_path)
+            # print(full_path)
             # print(os.path.join(dir_path, 'flight_logs'))
             path_list = []
             ios_parsed = False
@@ -140,12 +154,16 @@ def main():
             parent_df['timestamp'] = pd.to_datetime(parent_df['timestamp'])
             # Sort the data by timestamp
             parent_df.sort_values(by='timestamp', inplace=True)
-            
+
+            print('Save forensic timeline to .csv file...')
             parent_df.to_csv('./flight_logs/forensic_timeline.csv', index=False, encoding="utf-8")             
+            
+            print('Finish constructing timeline.')
             input("Press enter to continue...")
         elif start == '3':
             clear_screen()
             print('Entity Recognition is in process...\n')
+
             # Load the fine-tuned model
             print("Loading model...\n")
             droner = NERModel(
@@ -154,21 +172,29 @@ def main():
             
             # Load the forensic timeline
             print("Loading forensic timeline...\n")
-            timeline = pd.read_csv('./flight_logs/forensic_timeline.csv', encoding="utf-8")
+            timeline = pd.read_csv('./flight_logs/forensic_timeline_sorted.csv', encoding="utf-8")
             
             print('Recognizing mentioned entities...')
             pred_list = []
-            for row in range(0, timeline.shape[0]):
+            for row in tqdm(range(0, timeline.shape[0])):
                 message = timeline.iloc[row, 1]
                 [entities], _ = droner.predict([message])
-                timeline.iloc[row, 2]
-                pred_list.append(timeline, entities)
+                timestamp = timeline.iloc[row, 0]
+                pred_list.append({"timestamp": timestamp, "entities": entities})
             
-            generate_report(pred_list)
+            # save to .json file
+            with open('./flight_logs/entities.json', 'w') as file:
+                json.dump(pred_list, file)
+            print('Finish recognizing mentioned entities...')
             input("Press enter to continue...")
         elif start == '4':
-            print('Generating forensic report...')
+            clear_screen()
+            print('Forensic report generation is in process...\n')
 
+            print('Loading the entity recognition results...')
+
+            print('Generating forensic report...')
+            # generate_report()
             # Load the NER results
             # ner_result = json.read('')
             input("Press enter to continue...")
