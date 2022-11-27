@@ -18,7 +18,8 @@ def get_config():
 
     now = datetime.now()
     now = now.strftime("%d%m%Y_%H%M%S")
-    output_dir = os.path.join(config_file['output_dir'], now)
+    # output_dir = os.path.join(config_file['output_dir'], now)
+    output_dir = os.path.join(config_file['output_dir'], '27112022_190057')
     previous_step = 0
     previous_status = False
     use_cuda = True if torch.cuda.is_available() == True else False
@@ -221,7 +222,7 @@ def main():
                 droner = NERModel(
                     "bert", "model", use_cuda=config['use_cuda']
                 )
-                
+                print("Model loaded successfully\n")
                 # Load the forensic timeline
                 print("Loading forensic timeline...\n")
                 timeline = pd.read_csv(config['output_dir'] + '/forensic_timeline.csv', encoding="utf-8")

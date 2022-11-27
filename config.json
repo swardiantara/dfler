@@ -2,7 +2,7 @@
   "output_dir": "outputs",
   "source_evidence": "flight_logs",
   "wkhtml_path": {
-    "windows": "C:Program Fileswkhtmltopdf\binwkhtmltopdf.exe",
+    "windows": "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe",
     "linux": "/usr/bin/wkhtmltopdf"
   },
   "model_dir": "model",

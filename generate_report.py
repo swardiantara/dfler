@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 import sys
 import pandas as pd
+from os import system, name
 # import dfler from output_dir
 
 
@@ -266,9 +267,7 @@ def build_source_evidence(config):
   flat_list = [item for sublist in raw_list for item in sublist]
 
   for item in flat_list:
-    print("""
-        <li>{filename}</li>
-    """.format(filename=item))
+    print("<li>{filename}</li>".format(filename=item))
   print("""
       </ul>
     </section>
@@ -288,7 +287,7 @@ def build_ner_result(statistics):
     """)
   counter = 1
   for key, value in statistics.items():
-    if counter % 2 == 1:
+    if (counter % 2 == 1):
       print("""
         <tr>
           <td>Number of {key}</td>
@@ -296,11 +295,11 @@ def build_ner_result(statistics):
       """.format(key=key, value=value))
     else:
       print("""
-          <td>Number of token</td>
-          <td>1550</td>
+          <td>Number of {key}</td>
+          <td>{value}</td>
         </tr>
       """.format(key=key, value=value))
-    counter =+ 1
+    counter = counter + 1
   print("""
       </table>
     </section>
@@ -570,7 +569,21 @@ def generatePDF(config, filename):
   pdfkit.from_file(full_path + ".html", output_path = full_path + ".pdf", configuration=config_wkhtml)
 
 
-def generate_report(config):
+def generate_report():
+  config_file = open('config.json')
+  config_file = json.load(config_file)
+  wkhtml_path = ""
+  if name == 'nt':
+      wkhtml_path = config_file['wkhtml_path']['windows']
+  # for mac and linux(here, os.name is 'posix')
+  else:
+      wkhtml_path = config_file['wkhtml_path']['linux']
+  output_dir = os.path.join('outputs', '27112022_190057')
+  config = {
+    "output_dir": output_dir,
+    "wkhtml_path": wkhtml_path, 
+    "app_version": config_file['app_version'],
+  }
   # Prepare the filename and outputdir
   # Move to the config, so that every function can access
   # now = datetime.now()
@@ -580,4 +593,7 @@ def generate_report(config):
 
   build_html(config, filename)
   generatePDF(config, filename)
-    
+
+
+if __name__ == "__main__":
+    generate_report()
