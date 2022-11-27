@@ -5,7 +5,6 @@ from datetime import datetime
 import os
 import sys
 import pandas as pd
-from os import system, name
 # import dfler from output_dir
 
 
@@ -526,8 +525,7 @@ def statistical_analysis(config):
   state_df = ner_result_df[ner_result_df['tag'].isin(state)]
   function = ['B-FUNCTION', 'I-FUNCTION']
   function_df = ner_result_df[ner_result_df['tag'].isin(function)]
-
-  return {
+  statistics = {
     "message": len(ner_result),
     "entity": len(entity_df),
     "non_entity": len(non_entity_df),
@@ -539,6 +537,10 @@ def statistical_analysis(config):
     "component": len(component_df),
     "parameter": len(parameter_df)
   }
+
+  with open(config['output_dir'] + '/statistics.json', 'w') as file:
+    json.dump(statistics, file)
+  return statistics
 
 def build_html(config, filename):
   output_dir = config['output_dir']
@@ -569,21 +571,7 @@ def generatePDF(config, filename):
   pdfkit.from_file(full_path + ".html", output_path = full_path + ".pdf", configuration=config_wkhtml)
 
 
-def generate_report():
-  config_file = open('config.json')
-  config_file = json.load(config_file)
-  wkhtml_path = ""
-  if name == 'nt':
-      wkhtml_path = config_file['wkhtml_path']['windows']
-  # for mac and linux(here, os.name is 'posix')
-  else:
-      wkhtml_path = config_file['wkhtml_path']['linux']
-  output_dir = os.path.join('outputs', '27112022_190057')
-  config = {
-    "output_dir": output_dir,
-    "wkhtml_path": wkhtml_path, 
-    "app_version": config_file['app_version'],
-  }
+def generate_report(config):
   # Prepare the filename and outputdir
   # Move to the config, so that every function can access
   # now = datetime.now()
@@ -593,7 +581,5 @@ def generate_report():
 
   build_html(config, filename)
   generatePDF(config, filename)
-
-
-if __name__ == "__main__":
-    generate_report()
+  
+    

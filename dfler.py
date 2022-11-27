@@ -51,7 +51,7 @@ def clear_screen():
         _ = system('clear')
 
 def menu():
-    # clear_screen()
+    clear_screen()
     print("\t\t====================================================================\n")
     print("\t\t================ Drone Flight Log Entity Recognizer ================\n")
     print("\t\t====================================================================\n\n")
@@ -90,6 +90,7 @@ def main():
             clear_screen()
             print('Evidence checking in process...\n')
             time.sleep(1)
+            config['previous_step'] = 1
             
             files = os.listdir('flight_logs')
             android_logs = []
@@ -109,7 +110,7 @@ def main():
                         ios_logs.append(files)
             android_logs.extend(ios_logs)
             # save to .json file
-            config['previous_step'] = 1
+            
             if(len(android_logs) == 0):
                 print('No found files in the evidence folder!')
                 config['previous_status'] = False
@@ -129,14 +130,14 @@ def main():
             input("Press enter to continue...")
         elif start == '2':
             if config['previous_status'] == False and config['previous_step'] == 1:
-                print('Please follow the steps accordingly')
+                print('Previous step is not complete, please return to previous step')
                 time.sleep(1)
                 input("Press enter to continue...")
                 continue
             elif (config['previous_step'] == 1 and config['previous_status'] == True) or (config['previous_step'] != 1 and config['previous_status'] == True):
                 clear_screen()
                 print('Forensic timeline construction is in process...\n')
-
+                config['previous_step'] = 2
                 # Parse the raw flight logs
                 os.makedirs(config['output_dir'] + '/parsed/android')
                 android_path = os.path.join(config['output_dir'], 'parsed/android')
@@ -183,7 +184,13 @@ def main():
                     #             path_list.append(os.path.join(path, name))
 
                 parent_df = pd.DataFrame()
-                print(parent_df)
+                if(len(path_list) == 0):
+                    print('No parsed evidence found.')
+                    config['previous_status'] = False
+                    time.sleep(1)
+                    input("Press enter to continue...")
+                    continue
+
                 for path in path_list:
                     child_df = pd.read_csv(path, encoding='utf-8')
                     parent_df = pd.concat([parent_df, child_df])
@@ -209,45 +216,62 @@ def main():
                 continue
         elif start == '3':
             if config['previous_status'] == False and config['previous_step'] == 2:
-                print('Please follow the steps accordingly')
+                print('Previous step is not complete, please return to previous step')
                 time.sleep(1)
                 input("Press enter to continue...")
                 continue
             elif (config['previous_step'] == 2 and config['previous_status'] == True) or (config['previous_step'] != 2 and config['previous_status'] == True):
                 clear_screen()
                 print('Entity Recognition is in process...\n')
-
+                config['previous_step'] == 3
                 # Load the fine-tuned model
                 print("Loading model...\n")
-                droner = NERModel(
-                    "bert", "model", use_cuda=config['use_cuda']
-                )
-                print("Model loaded successfully\n")
-                # Load the forensic timeline
-                print("Loading forensic timeline...\n")
-                timeline = pd.read_csv(config['output_dir'] + '/forensic_timeline.csv', encoding="utf-8")
-                
-                print('Recognizing mentioned entities...')
-                pred_list = []
-                for row in tqdm(range(0, timeline.shape[0])):
-                    message = timeline.iloc[row, 1]
-                    [entities], _ = droner.predict([message])
-                    timestamp = timeline.iloc[row, 0]
-                    pred_list.append({"timestamp": timestamp, "entities": entities})
-                
-                # save to .json file
-                with open(config['output_dir'] + '/ner_result.json', 'w') as file:
-                    json.dump(pred_list, file)
-                print('Finish recognizing mentioned entities...')
-                input("Press enter to continue...")
+                model_exist = path.exists(config['model_dir'] + '/pytorch_model.bin')
+                if (model_exist == False):
+                    print('The model file is not found.')
+                    config['previous_status'] = False
+                    time.sleep(1)
+                    input("Press enter to continue...")
+                    continue
+                else: 
+                    droner = NERModel(
+                        "bert", config['model_dir'], use_cuda=config['use_cuda']
+                    )
+                    print("Model loaded successfully\n")
+                    # Load the forensic timeline
+                    print("Loading forensic timeline...\n")
+                    timeline_exist = path.exists(config['output_dir'] + '/forensic_timeline.csv')
+                    if(timeline_exist == False): 
+                        print('The forensic timeline file is not found.')
+                        config['previous_status'] = False
+                        time.sleep(1)
+                        input("Press enter to continue...")
+                        continue
+                    else:
+                        timeline = pd.read_csv(config['output_dir'] + '/forensic_timeline.csv', encoding="utf-8")
+                        print("Forensic timeline loaded successfully\n")
+                        print('Start recognizing mentioned entities...')
+                        pred_list = []
+                        for row in tqdm(range(0, timeline.shape[0])):
+                            message = timeline.iloc[row, 1]
+                            [entities], _ = droner.predict([message])
+                            timestamp = timeline.iloc[row, 0]
+                            pred_list.append({"timestamp": timestamp, "entities": entities})
+                        
+                        # save to .json file
+                        with open(config['output_dir'] + '/ner_result.json', 'w') as file:
+                            json.dump(pred_list, file)
+                        print('Finish recognizing mentioned entities...')
+                        time.sleep(1)
+                        input("Press enter to continue...")
             else:
                 print('Please follow the steps accordingly')
                 time.sleep(1)
                 input("Press enter to continue...")
                 continue
         elif start == '4':
-            if config['previous_status'] == False and config['previous_step'] == 2:
-                print('Please follow the steps accordingly')
+            if config['previous_status'] == False and config['previous_step'] == 3:
+                print('Previous step is not complete, please return to previous step')
                 time.sleep(1)
                 input("Press enter to continue...")
                 continue
@@ -274,14 +298,9 @@ def main():
         else:
             print('Invalid option!')
             input("Press enter to continue...")
-    # Setiap progress, print apa proses nya, dan bagaimana progress nya.
-    # payload = {
-    #     "inputs": "Aircraft is returning to the Home Point. Minimum RTH Altitude is 30m. You can reset the RTH Altitude in Remote Controller Settings after cancelling RTH.",
-    # }
-    # output = query({
-    #     "inputs": "Aircraft is returning to the Home Point. Minimum RTH Altitude is 30m. You can reset the RTH Altitude in Remote Controller Settings after cancelling RTH.",
-    # })
-    # print("================ Finish Detecting entities in log messages\n")
+
+    with open(config['output_dir'] + '/config.json', 'w') as file:
+        json.dump(config, file)
 
 if __name__ == "__main__":
     main()
