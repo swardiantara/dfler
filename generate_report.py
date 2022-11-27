@@ -275,7 +275,9 @@ def build_source_evidence(config, report_html):
   flat_list = [item for sublist in raw_list for item in sublist]
 
   for item in flat_list:
-    content = content + "<li>{filename}</li>".format(filename=item) 
+    content = content + """
+        <li>{filename}</li>
+    """.format(filename=item) 
     # print("<li>{filename}</li>".format(filename=item))
   content = content + """
       </ul>
@@ -477,36 +479,51 @@ def build_tr(records, report_html):
   for record in records:
     timestamp = record['timestamp']
     content = content + """
-      <tr>
-        <td>{timestamp}</td>
-        <td>
+          <tr>
+            <td>{timestamp}</td>
+            <td>
     """.format(timestamp=timestamp)
     messages = record['entities']
     for message in messages:
       for word, tag in message.items():
         if tag == 'O':
           # generate tag span O
-          content = content + """<span class="{tag}">{token}</span>""".format(tag='outside', token=word)
+          content = content + """
+              <span class="{tag}">{token}</span>
+          """.format(tag='outside', token=word)
         elif tag == 'B-ISSUE' or tag == 'I-ISSUE':
-          content = content + """<span class="{tag}">{token}</span>""".format(tag='issue', token=word)
+          content = content + """
+              <span class="{tag}">{token}</span>
+          """.format(tag='issue', token=word)
         elif tag == 'B-PARAMETER' or tag == 'I-PARAMETER':
-          content = content + """<span class="{tag}">{token}</span>""".format(tag='parameter', token=word)
+          content = content + """
+              <span class="{tag}">{token}</span>
+          """.format(tag='parameter', token=word)
         elif tag == 'B-ACTION' or tag == 'I-ACTION':
-          content = content + """<span class="{tag}">{token}</span>""".format(tag='action', token=word)
+          content = content + """
+              <span class="{tag}">{token}</span>
+          """.format(tag='action', token=word)
         elif tag == 'B-COMPONENT' or tag == 'I-COMPONENT':
-          content = content + """<span class="{tag}">{token}</span>""".format(tag='component', token=word)
+          content = content + """
+              <span class="{tag}">{token}</span>
+          """.format(tag='component', token=word)
         elif tag == 'B-FUNCTION' or tag == 'I-FUNCTION':
-          content = content + """<span class="{tag}">{token}</span>""".format(tag='function', token=word)
+          content = content + """
+              <span class="{tag}">{token}</span>
+          """.format(tag='function', token=word)
         elif tag == 'B-STATE' or tag == 'I-STATE':
-          content = content + """<span class="{tag}">{token}</span>""".format(tag='state', token=word)
+          content = content + """
+              <span class="{tag}">{token}</span>
+          """.format(tag='state', token=word)
+
     content = content + """
-          </td>
-        </tr>
+            </td>
+          </tr>
     """  
   content = content + """
-      </tbody>
-    </table>
-  </section>
+        </tbody>
+      </table>
+    </section>
   """
   report.write(content)
   report.close()
