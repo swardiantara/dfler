@@ -275,9 +275,9 @@ def build_source_evidence(config, report_html):
   flat_list = [item for sublist in raw_list for item in sublist]
 
   for item in flat_list:
-    content + "<li>{filename}</li>".format(filename=item) 
+    content = content + "<li>{filename}</li>".format(filename=item) 
     # print("<li>{filename}</li>".format(filename=item))
-  content + """
+  content = content + """
       </ul>
     </section>
   """
