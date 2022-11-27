@@ -3,4 +3,5 @@ seqeval=>1.22.0
 pandas
 numpy
 torch
+tqdm
 pdfkit
