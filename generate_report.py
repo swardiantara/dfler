@@ -499,11 +499,12 @@ def build_tr(records, report_html):
           content = content + """<span class="{tag}">{token}</span>""".format(tag='function', token=word)
         elif tag == 'B-STATE' or tag == 'I-STATE':
           content = content + """<span class="{tag}">{token}</span>""".format(tag='state', token=word)
-      
+    content = content + """
+          </td>
+        </tr>
+    """  
   content = content + """
-        </td>
-      </tr>
-    </tbody>
+      </tbody>
     </table>
   </section>
   """
