@@ -500,13 +500,13 @@ def build_tr(records, report_html):
         elif tag == 'B-STATE' or tag == 'I-STATE':
           content = content + """<span class="{tag}">{token}</span>""".format(tag='state', token=word)
       
-    content = content + """
-          </td>
-        </tr>
-      </tbody>
-      </table>
-    </section>
-    """
+  content = content + """
+        </td>
+      </tr>
+    </tbody>
+    </table>
+  </section>
+  """
   report.write(content)
   report.close()
 
