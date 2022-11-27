@@ -263,6 +263,7 @@ def main():
                 generate_report(config)
                 # Load the NER results
                 # ner_result = json.read('')
+                print('Finish generating forensic report...')
                 input("Press enter to continue...")
             else:
                 print('Please follow the steps accordingly')

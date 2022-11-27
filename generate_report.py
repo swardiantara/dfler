@@ -1,4 +1,5 @@
 import pdfkit
+import socket
 import json
 from datetime import datetime
 import os
@@ -19,14 +20,14 @@ def build_head():
   </head>
   """)
 
-def build_foot():
+def build_foot(config):
   print("""
     </body>
   <footer id="footer">
-    <span class="timestamp"> <em>Generated using dfler v.0.1</em> </span>
+    <span class="timestamp"> <em>Generated using dfler {app_version}</em> </span>
   </footer>
 </html>
-  """)
+  """).format(app_version=config['app_version'])
 
 
 def build_style():
@@ -217,13 +218,19 @@ def build_style():
   """)
 
 
-def build_report_header():
+def build_report_header(config):
+  now = datetime.now()
+  now = now.strftime("%m/%d/%Y %H:%M:%S")
+  hostname = socket.gethostname()
+  raw_list = open(config['output_dir'] + '/raw_list.json')
+  raw_list = json.load(raw_list)
+  flat_list = [item for sublist in raw_list for item in sublist]
   print("""
   <body>
     <h4 class="report-title">Drone Forensic Report</h4>
     <hr style="margin-top: -2em" />
     <span class="timestamp"
-      >This report is generated on: 11/15/2022 21:45:53</span
+      >This report is generated on: {timestamp}</span
     >
     <section id="metadata">
       <table id="table-metadata fixed">
@@ -231,7 +238,7 @@ def build_report_header():
         <col width="70%" />
         <tr>
           <td>Computer Name</td>
-          <td>Swardiantara</td>
+          <td>{hostname}</td>
         </tr>
         <tr>
           <td>Report Type</td>
@@ -239,11 +246,11 @@ def build_report_header():
         </tr>
         <tr>
           <td>Number of log files</td>
-          <td>12</td>
+          <td>{num_evidence}</td>
         </tr>
       </table>
     </section>
-  """)
+  """).format(timestamp=now, hostname=hostname, num_evidence=len(flat_list))
 
 
 def build_source_evidence(config):
@@ -252,18 +259,23 @@ def build_source_evidence(config):
       <h4 class="title-color" style="margin-top: 3em">Source evidence</h4>
       <hr style="margin-top: -1em" />
       <ul class="content-color">
-        <li>DJIFlightRecord_2018-06-15_(11-17-44).csv</li>
-        <li>DJIFlightRecord_2018-06-15_(11-17-44).csv</li>
-        <li>DJIFlightRecord_2018-06-15_(11-17-44).csv</li>
-        <li>14-045b34780500a6629d11a9560a89579381fcaa6b</li>
-        <li>14-045b34780500a6629d11a9560a89579381fcaa6b</li>
-        <li>14-045b34780500a6629d11a9560a89579381fcaa6b</li>
+  """)
+
+  raw_list = open(config['output_dir'] + '/raw_list.json')
+  raw_list = json.load(raw_list)
+  flat_list = [item for sublist in raw_list for item in sublist]
+
+  for item in flat_list:
+    print("""
+        <li>{filename}</li>
+    """).format(filename=item)
+  print("""
       </ul>
     </section>
   """)
 
 
-def build_ner_result():
+def build_ner_result(statistics):
   print("""
     <section>
       <h4 class="title-color" style="margin-top: 3em">Recognition Results</h4>
@@ -273,36 +285,23 @@ def build_ner_result():
         <col width="10%" />
         <col width="40%" />
         <col width="10%" />
+    """)
+  counter = 1
+  for key, value in statistics.items():
+    if counter % 2 == 1:
+      print("""
         <tr>
-          <td>Number of messages</td>
-          <td>172</td>
+          <td>Number of {key}</td>
+          <td>{value}</td>
+      """).format(key=key, value=value)
+    else:
+      print("""
           <td>Number of token</td>
           <td>1550</td>
         </tr>
-        <tr>
-          <td>Number of entitiy</td>
-          <td>1092</td>
-          <td>Number of non-entitiy</td>
-          <td>458</td>
-        </tr>
-        <tr>
-          <td>Number of state entity</td>
-          <td>29</td>
-          <td>Number of issue entity</td>
-          <td>102</td>
-        </tr>
-        <tr>
-          <td>Number of action entity</td>
-          <td>32</td>
-          <td>Number of function entity</td>
-          <td>100</td>
-        </tr>
-        <tr>
-          <td>Number of component entity</td>
-          <td>71</td>
-          <td>Number of parameter entity</td>
-          <td>124</td>
-        </tr>
+      """).format(key=key, value=value)
+    counter =+ 1
+  print("""
       </table>
     </section>
   """)
@@ -503,18 +502,58 @@ def statistical_analysis(config):
   ner_result = open(config['output_dir'] + '/ner_result.json')
   ner_result = json.load(ner_result)
 
+  word_list = []
+  tag_list = []
+  for record in ner_result:
+      timestamp = record['timestamp']
+      messages = record['entities']
+      for message in messages:
+          for word, tag in message.items():
+              word_list.append(word)
+              tag_list.append(tag)
+  
+  ner_result_df = pd.DataFrame(list(zip(word_list, tag_list)), columns =['word', 'tag'])
+  entity_df = ner_result_df[ner_result_df['tag'] != 'O']
+  non_entity_df = ner_result_df[ner_result_df['tag'] == 'O']
+  issue = ['B-ISSUE', 'I-ISSUE']
+  issue_df = ner_result_df[ner_result_df['tag'].isin(issue)]
+  component = ['B-COMPONENT', 'I-COMPONENT']
+  component_df = ner_result_df[ner_result_df['tag'].isin(component)]
+  action = ['B-ACTION', 'I-ACTION']
+  action_df = ner_result_df[ner_result_df['tag'].isin(action)]
+  parameter = ['B-PARAMETER', 'I-PARAMETER']
+  parameter_df = ner_result_df[ner_result_df['tag'].isin(parameter)]
+  state = ['B-STATE', 'I-STATE']
+  state_df = ner_result_df[ner_result_df['tag'].isin(state)]
+  function = ['B-FUNCTION', 'I-FUNCTION']
+  function_df = ner_result_df[ner_result_df['tag'].isin(function)]
+
+  return {
+    "message": len(ner_result),
+    "entity": len(entity_df),
+    "non_entity": len(non_entity_df),
+    "token": len(entity_df) + len(non_entity_df),
+    "state": len(state_df),
+    "issue": len(issue_df),
+    "action": len(action_df),
+    "function": len(function_df),
+    "component": len(component_df),
+    "parameter": len(parameter_df)
+  }
+
 def build_html(config, filename):
   output_dir = config['output_dir']
   full_path = os.path.join(output_dir, filename + ".html")
+  statistics = statistical_analysis(config)
 
   sys.stdout = open(full_path, 'w')
   build_head()
   build_style()
-  build_report_header()
+  build_report_header(config)
   build_source_evidence(config)
-  build_ner_result(config)
-  build_forensic_table()
-  build_foot()
+  build_ner_result(statistics)
+  build_forensic_table(config)
+  build_foot(config)
   sys.stdout.close()
 
 
