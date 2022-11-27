@@ -8,30 +8,36 @@ import pandas as pd
 # import dfler from output_dir
 
 
-def build_head():
-  print("""
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Forensic Report</title>
-  </head>
+def build_head(report_html):
+  report = open(report_html, 'a')
+  report.write("""
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Forensic Report</title>
+    </head>
   """)
+  report.close()
 
-def build_foot(config):
-  print("""
-    </body>
-  <footer id="footer">
-    <span class="timestamp"> <em>Generated using dfler {app_version}</em> </span>
-  </footer>
-</html>
+
+def build_foot(config, report_html):
+  report = open(report_html, 'a')
+  report.write("""
+      </body>
+    <footer id="footer">
+      <span class="timestamp"> <em>Generated using dfler {app_version}</em> </span>
+    </footer>
+  </html>
   """.format(app_version=config['app_version']))
+  report.close()
 
 
-def build_style():
-  print("""
+def build_style(report_html):
+  report = open(report_html, 'a')
+  report.write("""
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -216,16 +222,18 @@ def build_style():
     }
   </style>
   """)
+  report.close()
 
 
-def build_report_header(config):
+def build_report_header(config, report_html):
   now = datetime.now()
   now = now.strftime("%m/%d/%Y %H:%M:%S")
   hostname = socket.gethostname()
   raw_list = open(config['output_dir'] + '/raw_list.json')
   raw_list = json.load(raw_list)
   flat_list = [item for sublist in raw_list for item in sublist]
-  print("""
+  report = open(report_html, 'a')
+  report.write("""
   <body>
     <h4 class="report-title">Drone Forensic Report</h4>
     <hr style="margin-top: -2em" />
@@ -251,30 +259,36 @@ def build_report_header(config):
       </table>
     </section>
   """.format(timestamp=now, hostname=hostname, num_evidence=len(flat_list)))
+  report.close()
 
 
-def build_source_evidence(config):
-  print("""
+def build_source_evidence(config, report_html):
+  content = """
     <section>
       <h4 class="title-color" style="margin-top: 3em">Source evidence</h4>
       <hr style="margin-top: -1em" />
       <ul class="content-color">
-  """)
+  """
 
   raw_list = open(config['output_dir'] + '/raw_list.json')
   raw_list = json.load(raw_list)
   flat_list = [item for sublist in raw_list for item in sublist]
 
   for item in flat_list:
-    print("<li>{filename}</li>".format(filename=item))
-  print("""
+    content + "<li>{filename}</li>".format(filename=item) 
+    # print("<li>{filename}</li>".format(filename=item))
+  content + """
       </ul>
     </section>
-  """)
+  """
+  report = open(report_html, 'a')
+  report.write(content)
+  report.close()
 
 
-def build_ner_result(statistics):
-  print("""
+def build_ner_result(statistics, report_html):
+  report = open(report_html, 'a')
+  content = """
     <section>
       <h4 class="title-color" style="margin-top: 3em">Recognition Results</h4>
       <hr style="margin-top: -1em" />
@@ -283,29 +297,32 @@ def build_ner_result(statistics):
         <col width="10%" />
         <col width="40%" />
         <col width="10%" />
-    """)
+    """
   counter = 1
   for key, value in statistics.items():
     if (counter % 2 == 1):
-      print("""
+      content + """
         <tr>
           <td>Number of {key}</td>
           <td>{value}</td>
-      """.format(key=key, value=value))
+      """.format(key=key, value=value)
     else:
-      print("""
+      content + """
           <td>Number of {key}</td>
           <td>{value}</td>
         </tr>
-      """.format(key=key, value=value))
+      """.format(key=key, value=value)
     counter = counter + 1
-  print("""
+  content + """
       </table>
     </section>
-  """)
+  """
+  report.write(content)
+  report.close()
 
-def build_th():
-  print("""
+def build_th(report_html):
+  report = open(report_html, 'a')
+  report.write("""
   <section class="break-before">
     <h5 class="timeline">Highlights Color Code</h5>
       <table class="table-timeline fixed">
@@ -397,15 +414,7 @@ def build_th():
         </thead>
         <tbody>
       """)
-
-
-def build_tf():
-  print("""
-        </tbody>
-      </table>
-    </section>
-  """)
-
+  report.close()
 
 def statistics(config, ner_result):
   entities_json = open('./flight_logs/entities.json')
@@ -436,7 +445,7 @@ def statistics(config, ner_result):
   state_df = ner_result[ner_result['tag'].isin(state)]
   function = ['B-FUNCTION', 'I-FUNCTION']
   function_df = ner_result[ner_result['tag'].isin(function)]
-
+  entities_json.close()
   return {
     'message': len(entities),
     'entity': len(entity_df),
@@ -450,55 +459,61 @@ def statistics(config, ner_result):
   }
 
 
-def build_forensic_table(config):
+def build_forensic_table(config, report_html):
   # Opening JSON file
   timeline_file = open(config['output_dir'] + '/ner_result.json')
   timeline = json.load(timeline_file)
   
-  build_th()
+  build_th(report_html)
   # Loop the table
-  build_tr(timeline)
+  build_tr(timeline, report_html)
   # Closing file
-  build_tf()
   timeline_file.close()
 
 
-def build_tr(records):
+def build_tr(records, report_html):
+  report = open(report_html, 'a')
+  content = ""
   for record in records:
     timestamp = record['timestamp']
-    print("""
+    content + """
       <tr>
         <td>{timestamp}</td>
         <td>
-    """.format(timestamp=timestamp))
+    """.format(timestamp=timestamp)
     messages = record['entities']
     for message in messages:
       for word, tag in message.items():
         if tag == 'O':
           # generate tag span O
-          print("""<span class="{tag}">{token}</span>""".format(tag='outside', token=word))
+          content + """<span class="{tag}">{token}</span>""".format(tag='outside', token=word)
         elif tag == 'B-ISSUE' or tag == 'I-ISSUE':
-          print("""<span class="{tag}">{token}</span>""".format(tag='issue', token=word))
+          content + """<span class="{tag}">{token}</span>""".format(tag='issue', token=word)
         elif tag == 'B-PARAMETER' or tag == 'I-PARAMETER':
-          print("""<span class="{tag}">{token}</span>""".format(tag='parameter', token=word))
+          content + """<span class="{tag}">{token}</span>""".format(tag='parameter', token=word)
         elif tag == 'B-ACTION' or tag == 'I-ACTION':
-          print("""<span class="{tag}">{token}</span>""".format(tag='action', token=word))
+          content + """<span class="{tag}">{token}</span>""".format(tag='action', token=word)
         elif tag == 'B-COMPONENT' or tag == 'I-COMPONENT':
-          print("""<span class="{tag}">{token}</span>""".format(tag='component', token=word))
+          content + """<span class="{tag}">{token}</span>""".format(tag='component', token=word)
         elif tag == 'B-FUNCTION' or tag == 'I-FUNCTION':
-          print("""<span class="{tag}">{token}</span>""".format(tag='function', token=word))
+          content + """<span class="{tag}">{token}</span>""".format(tag='function', token=word)
         elif tag == 'B-STATE' or tag == 'I-STATE':
-          print("""<span class="{tag}">{token}</span>""".format(tag='state', token=word))
+          content + """<span class="{tag}">{token}</span>""".format(tag='state', token=word)
       
-    print("""
-        </td>
-      </tr>
-    """)
+    content + """
+          </td>
+        </tr>
+      </tbody>
+      </table>
+    </section>
+    """
+  report.write(content)
+  report.close()
 
 def statistical_analysis(config):
   # Opening JSON file
-  ner_result = open(config['output_dir'] + '/ner_result.json')
-  ner_result = json.load(ner_result)
+  ner_result_json = open(config['output_dir'] + '/ner_result.json')
+  ner_result = json.load(ner_result_json)
 
   word_list = []
   tag_list = []
@@ -540,6 +555,7 @@ def statistical_analysis(config):
 
   with open(config['output_dir'] + '/statistics.json', 'w') as file:
     json.dump(statistics, file)
+  ner_result_json.close()
   return statistics
 
 def build_html(config, filename):
@@ -547,15 +563,15 @@ def build_html(config, filename):
   full_path = os.path.join(output_dir, filename + ".html")
   statistics = statistical_analysis(config)
 
-  sys.stdout = open(full_path, 'w')
-  build_head()
-  build_style()
-  build_report_header(config)
-  build_source_evidence(config)
-  build_ner_result(statistics)
-  build_forensic_table(config)
-  build_foot(config)
-  sys.stdout.close()
+  # sys.stdout = open(full_path, 'w')
+  build_head(full_path)
+  build_style(full_path)
+  build_report_header(config, full_path)
+  build_source_evidence(config, full_path)
+  build_ner_result(statistics, full_path)
+  build_forensic_table(config, full_path)
+  build_foot(config, full_path)
+  # sys.stdout.close()
 
 
 def generatePDF(config, filename):
