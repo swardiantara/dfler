@@ -237,7 +237,7 @@ def main():
                     droner = NERModel(
                         "bert", config['model_dir'], use_cuda=config['use_cuda']
                     )
-                    print("Model loaded successfully\n")
+                    print("Model is loaded successfully\n")
                     # Load the forensic timeline
                     print("Loading forensic timeline...\n")
                     timeline_exist = path.exists(config['output_dir'] + '/forensic_timeline.csv')
@@ -249,7 +249,7 @@ def main():
                         continue
                     else:
                         timeline = pd.read_csv(config['output_dir'] + '/forensic_timeline.csv', encoding="utf-8")
-                        print("Forensic timeline loaded successfully\n")
+                        print("Forensic timeline is loaded successfully\n")
                         print('Start recognizing mentioned entities...')
                         pred_list = []
                         for row in tqdm(range(0, timeline.shape[0])):
@@ -278,18 +278,34 @@ def main():
             elif (config['previous_step'] == 2 and config['previous_status'] == True) or (config['previous_step'] != 2 and config['previous_status'] == True):
                 clear_screen()
                 print('Forensic report generation is in process...\n')
-
-                print('Loading the entity recognition results...')
+                config['previous_step'] == 4
+                print('Loading the NER results...')
                 # Opening JSON file
-                timeline_file = open(config['output_dir'] +  '/ner_result.json')
-                timeline = json.load(timeline_file)
+                ner_result_exist = path.exists(config['model_dir'] + '/ner_result.json')
+                if(ner_result_exist == False):
+                    print('The NER result is not found.')
+                    config['previous_status'] = False
+                    time.sleep(1)
+                    input("Press enter to continue...")
+                    continue
+                else:
+                    # Load the NER results
+                    timeline_file = open(config['output_dir'] +  '/ner_result.json')
+                    timeline = json.load(timeline_file)
+                    print('NER result is loaded successfully.')
 
-                print('Generating forensic report...')
-                generate_report(config)
-                # Load the NER results
-                # ner_result = json.read('')
-                print('Finish generating forensic report...')
-                input("Press enter to continue...")
+                    print('Start generating forensic report...')
+                    try:
+                        generate_report(config)
+                    except:
+                        print('Error in generating report.')
+                        config['previous_status'] = False
+                        time.sleep(1)
+                        input("Press enter to continue...")
+                        continue
+                    else:
+                        print('Report has generated successfully.')
+                        input("Press enter to continue...")
             else:
                 print('Please follow the steps accordingly')
                 time.sleep(1)
