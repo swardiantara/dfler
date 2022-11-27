@@ -87,6 +87,11 @@ def build_style(report_html):
       width: 100%;
       font-size: 1em;
     }
+
+    table.table-timeline > thead { display: table-header-group; }
+    table.table-timeline > tfoot { display: table-row-group; }
+    table.table-timeline > tbody > tr { page-break-inside: avoid; }
+
     table.table-timeline,
     table.table-timeline > thead > tr > th,
     table.table-timeline > tbody > tr > td {
