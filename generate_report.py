@@ -301,19 +301,19 @@ def build_ner_result(statistics, report_html):
   counter = 1
   for key, value in statistics.items():
     if (counter % 2 == 1):
-      content + """
+      content = content + """
         <tr>
           <td>Number of {key}</td>
           <td>{value}</td>
       """.format(key=key, value=value)
     else:
-      content + """
+      content = content + """
           <td>Number of {key}</td>
           <td>{value}</td>
         </tr>
       """.format(key=key, value=value)
     counter = counter + 1
-  content + """
+  content = content + """
       </table>
     </section>
   """
@@ -476,7 +476,7 @@ def build_tr(records, report_html):
   content = ""
   for record in records:
     timestamp = record['timestamp']
-    content + """
+    content = content + """
       <tr>
         <td>{timestamp}</td>
         <td>
@@ -486,21 +486,21 @@ def build_tr(records, report_html):
       for word, tag in message.items():
         if tag == 'O':
           # generate tag span O
-          content + """<span class="{tag}">{token}</span>""".format(tag='outside', token=word)
+          content = content + """<span class="{tag}">{token}</span>""".format(tag='outside', token=word)
         elif tag == 'B-ISSUE' or tag == 'I-ISSUE':
-          content + """<span class="{tag}">{token}</span>""".format(tag='issue', token=word)
+          content = content + """<span class="{tag}">{token}</span>""".format(tag='issue', token=word)
         elif tag == 'B-PARAMETER' or tag == 'I-PARAMETER':
-          content + """<span class="{tag}">{token}</span>""".format(tag='parameter', token=word)
+          content = content + """<span class="{tag}">{token}</span>""".format(tag='parameter', token=word)
         elif tag == 'B-ACTION' or tag == 'I-ACTION':
-          content + """<span class="{tag}">{token}</span>""".format(tag='action', token=word)
+          content = content + """<span class="{tag}">{token}</span>""".format(tag='action', token=word)
         elif tag == 'B-COMPONENT' or tag == 'I-COMPONENT':
-          content + """<span class="{tag}">{token}</span>""".format(tag='component', token=word)
+          content = content + """<span class="{tag}">{token}</span>""".format(tag='component', token=word)
         elif tag == 'B-FUNCTION' or tag == 'I-FUNCTION':
-          content + """<span class="{tag}">{token}</span>""".format(tag='function', token=word)
+          content = content + """<span class="{tag}">{token}</span>""".format(tag='function', token=word)
         elif tag == 'B-STATE' or tag == 'I-STATE':
-          content + """<span class="{tag}">{token}</span>""".format(tag='state', token=word)
+          content = content + """<span class="{tag}">{token}</span>""".format(tag='state', token=word)
       
-    content + """
+    content = content + """
           </td>
         </tr>
       </tbody>
