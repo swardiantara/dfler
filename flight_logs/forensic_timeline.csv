@@ -79,8 +79,8 @@ timestamp,message
 2018-06-19 00:10:58,Weak signal. Avoid blocking the antennas and keep the antennas parallel to and facing toward the aircraft during flight.; Downlink Lost.
 2018-06-19 00:11:02,Downlink Restored (after 0m 5.6s).
 2018-06-19 00:11:04,Downlink Lost.
-2018-06-19 00:11:09,Downlink Restored (after 0m 5.8s).
 2018-06-19 00:11:09,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.; Downlink Lost.
+2018-06-19 00:11:09,Downlink Restored (after 0m 5.8s).
 2018-06-19 00:11:18,Downlink Lost.
 2018-06-19 00:11:31,Downlink Lost.
 2018-06-19 00:11:32,Downlink Restored (after 0m 11s).
@@ -97,8 +97,8 @@ timestamp,message
 2018-06-19 00:14:49,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
 2018-06-19 00:15:43,Obstacle Sensing will be disabled when aircraft is landing. Fly with caution.
 2018-06-19 00:34:57,Data Recorder File Index is 2.
-2018-06-19 00:34:59,Home Point Updated.
 2018-06-19 00:34:59,Home Point recorded. Return-to-Home Altitude:98FT.
+2018-06-19 00:34:59,Home Point Updated.
 2018-06-19 00:35:19,Downlink Lost.
 2018-06-19 00:35:28,Downlink Restored (after 0m 11.3s).
 2018-06-19 00:39:36,Aircraft is close to the Home Point. Initiating Return to Home will now trigger Auto Landing.
@@ -114,8 +114,8 @@ timestamp,message
 2018-06-19 14:09:20,High wind velocity. Ensure the aircraft remains within your line of sight and fly with caution.
 2018-06-19 14:10:57,Weak signal. Avoid blocking the antennas and keep the antennas parallel to and facing toward the aircraft during flight.
 2018-06-19 14:12:56,High wind velocity. Fly with caution and land in a safe place ASAP.
-2018-06-19 14:13:14,Attitude is too large. Backward Obstacle Sensing is not functioning.
 2018-06-19 14:13:14,Forward Obstacle Sensing is not functioning.
+2018-06-19 14:13:14,Attitude is too large. Backward Obstacle Sensing is not functioning.
 2018-06-19 14:15:43,Obstacle Sensing will be disabled when aircraft is landing. Fly with caution.
 2018-06-19 14:16:15,Ambient Light is too weak.
 2018-06-19 14:16:15,Forward Obstacle Sensing is not functioning.
@@ -151,8 +151,8 @@ timestamp,message
 2018-06-19 15:03:00,Obstacle Sensing will be disabled when aircraft is landing. Fly with caution.
 2018-06-19 15:03:02,Correcting Landing Position
 2018-06-19 15:03:02,Precision Landing
-2018-06-19 15:03:09,Precision Landing
 2018-06-19 15:03:09,Correcting Landing Position
+2018-06-19 15:03:09,Precision Landing
 2018-06-19 15:03:16,Correcting Landing Position
 2018-06-19 15:03:16,Precision Landing
 2018-06-19 15:03:22,Precision Landing

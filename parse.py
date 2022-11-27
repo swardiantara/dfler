@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-def read_android_log(path, file_name):
+def read_android_log(path, file_name, output_dir):
     # file_name = "contoh.csv"
     full_path = f"{path}/{file_name}"
     file_ext = file_name.split(".")        
@@ -168,7 +168,7 @@ def read_android_log(path, file_name):
                 record_list.append([date, time, warning])
         dataframe = pd.DataFrame(record_list, index=None, columns=["date", "time", "message"])
         file_name = "parsed_" + file_name
-        dataframe.to_csv(f"{path}/{file_name}.csv", index=False, encoding='utf-8')
+        dataframe.to_csv(f"{output_dir}/{file_name}.csv", index=False, encoding='utf-8')
         # print(dataframe.shape)
         return ""
     elif file_ext == "":
@@ -202,12 +202,12 @@ def read_android_log(path, file_name):
                 # print(record_list)
             dataframe = pd.DataFrame(record_list, index=None, columns=["date", "time", "message"])
             file_name = "parsed_" + file_name
-            dataframe.to_csv(f"{path}/{file_name}.csv", index=False, encoding='utf-8')
+            dataframe.to_csv(f"{output_dir}/{file_name}.csv", index=False, encoding='utf-8')
             # print(dataframe.shape)
             file.close()
         return ""
 
-def read_ios_log(path, file_name):
+def read_ios_log(path, file_name, output_dir):
     full_path = f"{path}/{file_name}"
     # drone_model = folder_data["drone"]
     # dataset = folder_data["dataset"]
@@ -252,7 +252,7 @@ def read_ios_log(path, file_name):
                 # print(record)
             dataframe = pd.DataFrame(record_list, index=None, columns=["date", "time", "message"])
             file_name = "parsed_" + file_name
-            dataframe.to_csv(f"{path}/{file_name}.csv", index=False, encoding='utf-8')
+            dataframe.to_csv(f"{output_dir}/{file_name}.csv", index=False, encoding='utf-8')
             # print(text_split)
         # elif first_char == "[" and not second_char == "[":  # [2017-06-28 05:56:19.955]remove need upgrade groups
         #     # List
