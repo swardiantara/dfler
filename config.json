@@ -1,0 +1,10 @@
+{
+  "output_dir": "outputs",
+  "source_evidence": "flight_logs",
+  "wkhtml_path": {
+    "windows": "C:Program Fileswkhtmltopdf\binwkhtmltopdf.exe",
+    "linux": "/usr/bin/wkhtmltopdf"
+  },
+  "model_dir": "model",
+  "app_version": "v0.1.0"
+}

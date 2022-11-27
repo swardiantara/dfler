@@ -129,7 +129,9 @@ dmypy.json
 .pyre/
 
 # After training
-/outputs/checkpoint*
+/outputs
 /cache_dir
+/model/pytorch_model.bin
 /runs
+/__pycache__
 .gitignore

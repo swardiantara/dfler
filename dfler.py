@@ -9,15 +9,32 @@ from parse import read_android_log, read_ios_log, construct_timeline
 from simpletransformers.ner import NERModel
 import pandas as pd
 
-API_URL = "https://api-inference.huggingface.co/models/swardiantara/droner"
-headers = {"Authorization": "Bearer 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"}
 
-def query(payload):
-	response = requests.post(API_URL, headers=headers, json=payload)
-	return response.json()
+def get_config():
+    config_file = open('config.json')
+    config_file = json.load(config_file)
 
+    now = datetime.now()
+    now = now.strftime("%d%m%Y_%H%M%S")
+    output_dir = os.path.join(config_file['output_dir'], now)
+    previous_step = 0
+    previous_status = False
 
-output_dir = None
+    wkhtml_path = ""
+    if name == 'nt':
+        wkhtml_path = config_file['wkhtml_path']['windows']
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        wkhtml_path = config_file['wkhtml_path']['linux']
+
+    return {
+        "output_dir": output_dir,
+        "model_dir": config_file['model_dir'],
+        "previous_step": previous_step,
+        "previous_status": previous_status,
+        "wkhtml_path": wkhtml_path,
+        "app_version": config_file['app_version']
+    }
 
 def clear_screen():
     # for windows
@@ -28,7 +45,7 @@ def clear_screen():
         _ = system('clear')
 
 def menu():
-    clear_screen()
+    # clear_screen()
     print("\t\t====================================================================\n")
     print("\t\t================ Drone Flight Log Entity Recognizer ================\n")
     print("\t\t====================================================================\n\n")
@@ -43,12 +60,13 @@ def menu():
 
 
 def main():
-    now = datetime.now()
-    now = now.strftime("%d%m%Y_%H%M%S")
-    output_dir = os.path.join("./result", now)
+    # now = datetime.now()
+    # now = now.strftime("%d%m%Y_%H%M%S")
+    # output_dir = os.path.join("./result", now)
+    config = get_config()
 
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    if not os.path.exists(config['output_dir']):
+        os.makedirs(config['output_dir'])
 
     start = menu()
     if start == '0':
@@ -83,14 +101,17 @@ def main():
                         android_logs.append(files)
                     else:
                         ios_logs.append(files)
-            found_files = android_logs + ios_logs
+            android_logs.extend(ios_logs)
             # save to .json file
-            with open('./flight_logs/raw_list.json', 'w') as file:
-                json.dump(found_files, file)
-            if(len(found_files) == 0):
+            config['previous_step'] = 1
+            if(len(android_logs) == 0):
                 print('No found files in the evidence folder!')
+                config['previous_status'] = False
                 time.sleep(1)
             else:
+                with open(config['output_dir'] + '/raw_list.json', 'w') as file:
+                    json.dump(android_logs, file)
+                config['previous_status'] = True
                 print('Finish checking evidence')
                 time.sleep(1)
                 print('Found files: \n')
@@ -101,65 +122,85 @@ def main():
                 time.sleep(1)
             input("Press enter to continue...")
         elif start == '2':
-            clear_screen()
-            print('Forensic timeline construction is in process...\n')
+            if config['previous_status'] == False and config['previous_step'] == 1:
+                print('Please follow the steps accordingly')
+                time.sleep(1)
+                input("Press enter to continue...")
+                continue
+            elif (config['previous_step'] == 1 and config['previous_status'] == True) or (config['previous_step'] != 1 and config['previous_status'] == True):
+                clear_screen()
+                print('Forensic timeline construction is in process...\n')
 
-            # Parse the raw flight logs
-            full_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'flight_logs')
-
-            # Construct the forensic timeline from parsed flight log
-            # print(full_path)
-            # print(os.path.join(dir_path, 'flight_logs'))
-            path_list = []
-            ios_parsed = False
-            android_parsed = False
-            for path, subdirs, files in os.walk(full_path):
-                if path.find("android") != -1:
-                    for filename in os.listdir(path):
-                        if filename.find("parsed") != -1:
-                            continue
-                        print("path: ", path)
-                        print("Extracting file: %s" % filename)
-                        read_android_log(path, filename)
-                        print("Finish Extracting file: %s\n" % filename)
-                    android_parsed = True
-                    
-                elif path.find("ios") != -1:
-                    for filename in os.listdir(path):
-                        if filename.find("parsed") != -1:
-                            continue
-                        print("path: ", path)
-                        print("Extracting file: %s" % filename)
-                        read_ios_log(path, filename)
-                        print("Finish Extracting file: %s\n" % filename)
-                    ios_parsed = True
+                # Parse the raw flight logs
+                os.makedirs(config['output_dir'] + '/parsed/android')
+                android_path = os.path.join(config['output_dir'], 'parsed/android')
+                os.makedirs(config['output_dir'] + '/parsed/ios')
+                ios_path = os.path.join(config['output_dir'], 'parsed/ios')
+                full_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'flight_logs')
                 
-                if(ios_parsed or android_parsed):
-                    for name in files:
-                        file_ext = name.split(".")
-                        file_ext = file_ext[-1] if len(file_ext) > 1 else ""
-                        if(name.find("parsed_") != -1 and file_ext == "csv"):
-                            path_list.append(os.path.join(path, name))
+                # Construct the forensic timeline from parsed flight log
+                # print(full_path)
+                # print(os.path.join(dir_path, 'flight_logs'))
+                path_list = []
+                ios_parsed = False
+                android_parsed = False
+                for path, subdirs, files in os.walk(full_path):
+                    if path.find("android") != -1:
+                        for filename in os.listdir(path):
+                            if filename.find("parsed") != -1:
+                                continue
+                            print("path: ", path)
+                            print("Extracting file: %s" % filename)
+                            read_android_log(path, filename, android_path)
+                            print("Finish Extracting file: %s\n" % filename)
+                        android_parsed = True
+                        
+                    elif path.find("ios") != -1:
+                        for filename in os.listdir(path):
+                            if filename.find("parsed") != -1:
+                                continue
+                            print("path: ", path)
+                            print("Extracting file: %s" % filename)
+                            read_ios_log(path, filename, ios_path)
+                            print("Finish Extracting file: %s\n" % filename)
+                        ios_parsed = True
 
-            parent_df = pd.DataFrame()
-            for path in path_list:
-                child_df = pd.read_csv(path, encoding='utf-8')
-                parent_df = pd.concat([parent_df, child_df])
+                parsed_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join(config['output_dir'], 'parsed'))
+                for path, subdirs, files in os.walk(parsed_path):
+                    for filename in os.listdir(path):
+                        path_list.append(os.path.join(path, filename))
+                    # if(ios_parsed or android_parsed):
+                    #     for name in files:
+                    #         file_ext = name.split(".")
+                    #         file_ext = file_ext[-1] if len(file_ext) > 1 else ""
+                    #         if(name.find("parsed_") != -1 and file_ext == "csv"):
+                    #             path_list.append(os.path.join(path, name))
 
-            # making copy of team column
-            time_col = parent_df["time"].copy()
-            parent_df["timestamp"] = parent_df["date"].str.cat(time_col, sep =" ")
-            parent_df.drop(columns = ['time', 'date'], inplace=True)
-            parent_df = parent_df[['timestamp', 'message']]
-            parent_df['timestamp'] = pd.to_datetime(parent_df['timestamp'])
-            # Sort the data by timestamp
-            parent_df.sort_values(by='timestamp', inplace=True)
+                parent_df = pd.DataFrame()
+                print(parent_df)
+                for path in path_list:
+                    child_df = pd.read_csv(path, encoding='utf-8')
+                    parent_df = pd.concat([parent_df, child_df])
 
-            print('Save forensic timeline to .csv file...')
-            parent_df.to_csv('./flight_logs/forensic_timeline.csv', index=False, encoding="utf-8")             
-            
-            print('Finish constructing timeline.')
-            input("Press enter to continue...")
+                # making copy of team column
+                time_col = parent_df["time"].copy()
+                parent_df["timestamp"] = parent_df["date"].str.cat(time_col, sep =" ")
+                parent_df.drop(columns = ['time', 'date'], inplace=True)
+                parent_df = parent_df[['timestamp', 'message']]
+                parent_df['timestamp'] = pd.to_datetime(parent_df['timestamp'])
+                # Sort the data by timestamp
+                parent_df.sort_values(by='timestamp', inplace=True)
+
+                print('Save forensic timeline to .csv file...')
+                parent_df.to_csv('./flight_logs/forensic_timeline.csv', index=False, encoding="utf-8")             
+                
+                print('Finish constructing timeline.')
+                input("Press enter to continue...")
+            else:
+                print('Please follow the steps accordingly')
+                time.sleep(1)
+                input("Press enter to continue...")
+                continue
         elif start == '3':
             clear_screen()
             print('Entity Recognition is in process...\n')
@@ -167,7 +208,7 @@ def main():
             # Load the fine-tuned model
             print("Loading model...\n")
             droner = NERModel(
-                "bert", "outputs", use_cuda=True
+                "bert", "model", use_cuda=True
             )
             
             # Load the forensic timeline
