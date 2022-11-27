@@ -27,7 +27,7 @@ def build_foot(config):
     <span class="timestamp"> <em>Generated using dfler {app_version}</em> </span>
   </footer>
 </html>
-  """).format(app_version=config['app_version'])
+  """.format(app_version=config['app_version']))
 
 
 def build_style():
@@ -250,7 +250,7 @@ def build_report_header(config):
         </tr>
       </table>
     </section>
-  """).format(timestamp=now, hostname=hostname, num_evidence=len(flat_list))
+  """.format(timestamp=now, hostname=hostname, num_evidence=len(flat_list)))
 
 
 def build_source_evidence(config):
@@ -268,7 +268,7 @@ def build_source_evidence(config):
   for item in flat_list:
     print("""
         <li>{filename}</li>
-    """).format(filename=item)
+    """.format(filename=item))
   print("""
       </ul>
     </section>
@@ -293,13 +293,13 @@ def build_ner_result(statistics):
         <tr>
           <td>Number of {key}</td>
           <td>{value}</td>
-      """).format(key=key, value=value)
+      """.format(key=key, value=value))
     else:
       print("""
           <td>Number of token</td>
           <td>1550</td>
         </tr>
-      """).format(key=key, value=value)
+      """.format(key=key, value=value))
     counter =+ 1
   print("""
       </table>
@@ -322,7 +322,7 @@ def build_th():
           </tr>
         </thead>
         <tbody>
-                    <tr>
+          <tr>
             <td>
               <span class="box issue-box"></span>
             </td>
