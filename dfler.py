@@ -6,8 +6,10 @@ from tqdm import tqdm
 from datetime import datetime
 from os import system, name
 from parse import read_android_log, read_ios_log, construct_timeline
+from generate_report import generate_report
 from simpletransformers.ner import NERModel
 import pandas as pd
+import torch
 
 
 def get_config():
@@ -19,6 +21,8 @@ def get_config():
     output_dir = os.path.join(config_file['output_dir'], now)
     previous_step = 0
     previous_status = False
+    use_cuda = True if torch.cuda.is_available() == True else False
+    
 
     wkhtml_path = ""
     if name == 'nt':
@@ -33,7 +37,8 @@ def get_config():
         "previous_step": previous_step,
         "previous_status": previous_status,
         "wkhtml_path": wkhtml_path,
-        "app_version": config_file['app_version']
+        "app_version": config_file['app_version'],
+        "use_cuda": use_cuda
     }
 
 def clear_screen():
@@ -167,7 +172,7 @@ def main():
 
                 parsed_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join(config['output_dir'], 'parsed'))
                 for path, subdirs, files in os.walk(parsed_path):
-                    for filename in os.listdir(path):
+                    for filename in files:
                         path_list.append(os.path.join(path, filename))
                     # if(ios_parsed or android_parsed):
                     #     for name in files:
@@ -192,7 +197,7 @@ def main():
                 parent_df.sort_values(by='timestamp', inplace=True)
 
                 print('Save forensic timeline to .csv file...')
-                parent_df.to_csv('./flight_logs/forensic_timeline.csv', index=False, encoding="utf-8")             
+                parent_df.to_csv(config['output_dir'] + '/forensic_timeline.csv', index=False, encoding="utf-8")             
                 
                 print('Finish constructing timeline.')
                 input("Press enter to continue...")
@@ -202,43 +207,68 @@ def main():
                 input("Press enter to continue...")
                 continue
         elif start == '3':
-            clear_screen()
-            print('Entity Recognition is in process...\n')
+            if config['previous_status'] == False and config['previous_step'] == 2:
+                print('Please follow the steps accordingly')
+                time.sleep(1)
+                input("Press enter to continue...")
+                continue
+            elif (config['previous_step'] == 2 and config['previous_status'] == True) or (config['previous_step'] != 2 and config['previous_status'] == True):
+                clear_screen()
+                print('Entity Recognition is in process...\n')
 
-            # Load the fine-tuned model
-            print("Loading model...\n")
-            droner = NERModel(
-                "bert", "model", use_cuda=True
-            )
-            
-            # Load the forensic timeline
-            print("Loading forensic timeline...\n")
-            timeline = pd.read_csv('./flight_logs/forensic_timeline_sorted.csv', encoding="utf-8")
-            
-            print('Recognizing mentioned entities...')
-            pred_list = []
-            for row in tqdm(range(0, timeline.shape[0])):
-                message = timeline.iloc[row, 1]
-                [entities], _ = droner.predict([message])
-                timestamp = timeline.iloc[row, 0]
-                pred_list.append({"timestamp": timestamp, "entities": entities})
-            
-            # save to .json file
-            with open('./flight_logs/entities.json', 'w') as file:
-                json.dump(pred_list, file)
-            print('Finish recognizing mentioned entities...')
-            input("Press enter to continue...")
+                # Load the fine-tuned model
+                print("Loading model...\n")
+                droner = NERModel(
+                    "bert", "model", use_cuda=config['use_cuda']
+                )
+                
+                # Load the forensic timeline
+                print("Loading forensic timeline...\n")
+                timeline = pd.read_csv(config['output_dir'] + '/forensic_timeline.csv', encoding="utf-8")
+                
+                print('Recognizing mentioned entities...')
+                pred_list = []
+                for row in tqdm(range(0, timeline.shape[0])):
+                    message = timeline.iloc[row, 1]
+                    [entities], _ = droner.predict([message])
+                    timestamp = timeline.iloc[row, 0]
+                    pred_list.append({"timestamp": timestamp, "entities": entities})
+                
+                # save to .json file
+                with open(config['output_dir'] + '/ner_result.json', 'w') as file:
+                    json.dump(pred_list, file)
+                print('Finish recognizing mentioned entities...')
+                input("Press enter to continue...")
+            else:
+                print('Please follow the steps accordingly')
+                time.sleep(1)
+                input("Press enter to continue...")
+                continue
         elif start == '4':
-            clear_screen()
-            print('Forensic report generation is in process...\n')
+            if config['previous_status'] == False and config['previous_step'] == 2:
+                print('Please follow the steps accordingly')
+                time.sleep(1)
+                input("Press enter to continue...")
+                continue
+            elif (config['previous_step'] == 2 and config['previous_status'] == True) or (config['previous_step'] != 2 and config['previous_status'] == True):
+                clear_screen()
+                print('Forensic report generation is in process...\n')
 
-            print('Loading the entity recognition results...')
+                print('Loading the entity recognition results...')
+                # Opening JSON file
+                timeline_file = open(config['output_dir'] +  '/ner_result.json')
+                timeline = json.load(timeline_file)
 
-            print('Generating forensic report...')
-            # generate_report()
-            # Load the NER results
-            # ner_result = json.read('')
-            input("Press enter to continue...")
+                print('Generating forensic report...')
+                generate_report(config)
+                # Load the NER results
+                # ner_result = json.read('')
+                input("Press enter to continue...")
+            else:
+                print('Please follow the steps accordingly')
+                time.sleep(1)
+                input("Press enter to continue...")
+                continue
         else:
             print('Invalid option!')
             input("Press enter to continue...")
