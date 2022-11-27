@@ -18,8 +18,8 @@ def get_config():
 
     now = datetime.now()
     now = now.strftime("%d%m%Y_%H%M%S")
-    # output_dir = os.path.join(config_file['output_dir'], now)
-    output_dir = os.path.join(config_file['output_dir'], '27112022_190057')
+    output_dir = os.path.join(config_file['output_dir'], now)
+    # output_dir = os.path.join(config_file['output_dir'], '27112022_190057')
     previous_step = 0
     previous_status = False
     use_cuda = True if torch.cuda.is_available() == True else False
@@ -226,21 +226,21 @@ def main():
                 config['previous_step'] == 3
                 # Load the fine-tuned model
                 print("Loading model...\n")
-                model_exist = path.exists(config['model_dir'] + '/pytorch_model.bin')
+                model_exist = os.path.exists(config['model_dir'] + '/pytorch_model.bin')
                 if (model_exist == False):
                     print('The model file is not found.')
                     config['previous_status'] = False
                     time.sleep(1)
                     input("Press enter to continue...")
                     continue
-                else: 
+                else:
                     droner = NERModel(
                         "bert", config['model_dir'], use_cuda=config['use_cuda']
                     )
                     print("Model is loaded successfully\n")
                     # Load the forensic timeline
                     print("Loading forensic timeline...\n")
-                    timeline_exist = path.exists(config['output_dir'] + '/forensic_timeline.csv')
+                    timeline_exist = os.path.exists(config['output_dir'] + '/forensic_timeline.csv')
                     if(timeline_exist == False): 
                         print('The forensic timeline file is not found.')
                         config['previous_status'] = False
@@ -281,7 +281,7 @@ def main():
                 config['previous_step'] == 4
                 print('Loading the NER results...')
                 # Opening JSON file
-                ner_result_exist = path.exists(config['model_dir'] + '/ner_result.json')
+                ner_result_exist = os.path.exists(config['output_dir'] + '/ner_result.json')
                 if(ner_result_exist == False):
                     print('The NER result is not found.')
                     config['previous_status'] = False
