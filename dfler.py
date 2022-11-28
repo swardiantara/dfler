@@ -107,6 +107,12 @@ def main():
                 print("No sub-folders in the evidence folder")
                 config['previous_status'] = False
                 time.sleep(1)
+                try:
+                    input("Press enter to continue...")
+                    continue
+                except EOFError:
+                    print("No input received, exit program...")
+                    sys.exit(0)
             else: 
                 for folder in folders:
                     # Filtering only the files.
@@ -137,6 +143,7 @@ def main():
                 time.sleep(1)
             try:
                 input("Press enter to continue...")
+                continue
             except EOFError:
                 print("No input received, exit program...")
                 sys.exit(0)
@@ -146,6 +153,7 @@ def main():
                 time.sleep(1)
                 try:
                     input("Press enter to continue...")
+                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -205,6 +213,7 @@ def main():
                     time.sleep(1)
                     try:
                         input("Press enter to continue...")
+                        continue
                     except EOFError:
                         print("No input received, exit program...")
                         sys.exit(0)
