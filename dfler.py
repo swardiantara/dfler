@@ -1,6 +1,7 @@
 import requests
 import time
 import os
+import sys
 import json
 from tqdm import tqdm
 from datetime import datetime
@@ -61,7 +62,10 @@ def menu():
     print("\t\t\t3. Drone Entity Recognition\n")
     print("\t\t\t4. Forensic Report Generation\n")
     print("\t\t\t0. Exit\n\n")
-    option = input("\t\tEnter option: ")
+    try:
+        option = input("\t\tEnter option: ")
+    except EOFError:
+        option = "1"
     return option
 
 
@@ -76,16 +80,18 @@ def main():
 
     start = menu()
     if start == '0':
+        with open(config['output_dir'] + '/config.json', 'w') as file:
+                json.dump(config, file)
         print("Exit program...")
         time.sleep(2)
-        return 0
+        sys.exit(0)
     while start != '0':
-        start = menu()
         if start == '0':
+            with open(config['output_dir'] + '/config.json', 'w') as file:
+                json.dump(config, file)
             print("Exit program...")
             time.sleep(1)
-            return 0
-            break
+            sys.exit(0)
         elif start == '1':
             clear_screen()
             print('Evidence checking in process...\n')
@@ -99,6 +105,8 @@ def main():
             # print(folders)
             if(len(folders) == 0):
                 print("No sub-folders in the evidence folder")
+                config['previous_status'] = False
+                time.sleep(1)
             else: 
                 for folder in folders:
                     # Filtering only the files.
@@ -119,21 +127,28 @@ def main():
                 with open(config['output_dir'] + '/raw_list.json', 'w') as file:
                     json.dump(android_logs, file)
                 config['previous_status'] = True
-                print('Finish checking evidence')
                 time.sleep(1)
                 print('Found files: \n')
                 print('iOS logs: ')
                 print(*ios_logs, sep="\n")
                 print("\nAndroid logs: \n")
                 print(*android_logs, sep="\n")
+                print('Finish checking evidence...')
                 time.sleep(1)
-            input("Press enter to continue...")
+            try:
+                input("Press enter to continue...")
+            except EOFError:
+                print("No input received, exit program...")
+                sys.exit(0)
         elif start == '2':
             if config['previous_status'] == False and config['previous_step'] == 1:
                 print('Previous step is not complete, please return to previous step')
                 time.sleep(1)
-                input("Press enter to continue...")
-                continue
+                try:
+                    input("Press enter to continue...")
+                except EOFError:
+                    print("No input received, exit program...")
+                    sys.exit(0)
             elif (config['previous_step'] == 1 and config['previous_status'] == True) or (config['previous_step'] != 1 and config['previous_status'] == True):
                 clear_screen()
                 print('Forensic timeline construction is in process...\n')
@@ -188,8 +203,11 @@ def main():
                     print('No parsed evidence found.')
                     config['previous_status'] = False
                     time.sleep(1)
-                    input("Press enter to continue...")
-                    continue
+                    try:
+                        input("Press enter to continue...")
+                    except EOFError:
+                        print("No input received, exit program...")
+                        sys.exit(0)
 
                 for path in path_list:
                     child_df = pd.read_csv(path, encoding='utf-8')
@@ -208,18 +226,31 @@ def main():
                 parent_df.to_csv(config['output_dir'] + '/forensic_timeline.csv', index=False, encoding="utf-8")             
                 
                 print('Finish constructing timeline.')
-                input("Press enter to continue...")
+                try:
+                    input("Press enter to continue...")
+                    continue
+                except EOFError:
+                    print("No input received, exit program...")
+                    sys.exit(0)
             else:
                 print('Please follow the steps accordingly')
                 time.sleep(1)
-                input("Press enter to continue...")
-                continue
+                try:
+                    input("Press enter to continue...")
+                    continue
+                except EOFError:
+                    print("No input received, exit program...")
+                    sys.exit(0)
         elif start == '3':
             if config['previous_status'] == False and config['previous_step'] == 2:
                 print('Previous step is not complete, please return to previous step')
                 time.sleep(1)
-                input("Press enter to continue...")
-                continue
+                try:
+                    input("Press enter to continue...")
+                    continue
+                except EOFError:
+                    print("No input received, exit program...")
+                    sys.exit(0)
             elif (config['previous_step'] == 2 and config['previous_status'] == True) or (config['previous_step'] != 2 and config['previous_status'] == True):
                 clear_screen()
                 print('Entity Recognition is in process...\n')
@@ -231,8 +262,12 @@ def main():
                     print('The model file is not found.')
                     config['previous_status'] = False
                     time.sleep(1)
-                    input("Press enter to continue...")
-                    continue
+                    try:
+                        input("Press enter to continue...")
+                        continue
+                    except EOFError:
+                        print("No input received, exit program...")
+                        sys.exit(0)
                 else:
                     droner = NERModel(
                         "bert", config['model_dir'], use_cuda=config['use_cuda']
@@ -245,8 +280,12 @@ def main():
                         print('The forensic timeline file is not found.')
                         config['previous_status'] = False
                         time.sleep(1)
-                        input("Press enter to continue...")
-                        continue
+                        try:
+                            input("Press enter to continue...")
+                            continue
+                        except EOFError:
+                            print("No input received, exit program...")
+                            sys.exit(0)
                     else:
                         timeline = pd.read_csv(config['output_dir'] + '/forensic_timeline.csv', encoding="utf-8")
                         print("Forensic timeline is loaded successfully\n")
@@ -263,18 +302,31 @@ def main():
                             json.dump(pred_list, file)
                         print('Finish recognizing mentioned entities...')
                         time.sleep(1)
-                        input("Press enter to continue...")
+                        try:
+                            input("Press enter to continue...")
+                            continue
+                        except EOFError:
+                            print("No input received, exit program...")
+                            sys.exit(0)
             else:
                 print('Please follow the steps accordingly')
                 time.sleep(1)
-                input("Press enter to continue...")
-                continue
+                try:
+                    input("Press enter to continue...")
+                    continue
+                except EOFError:
+                    print("No input received, exit program...")
+                    sys.exit(0)
         elif start == '4':
             if config['previous_status'] == False and config['previous_step'] == 3:
                 print('Previous step is not complete, please return to previous step')
                 time.sleep(1)
-                input("Press enter to continue...")
-                continue
+                try:
+                    input("Press enter to continue...")
+                    continue
+                except EOFError:
+                    print("No input received, exit program...")
+                    sys.exit(0)
             elif (config['previous_step'] == 2 and config['previous_status'] == True) or (config['previous_step'] != 2 and config['previous_status'] == True):
                 clear_screen()
                 print('Forensic report generation is in process...\n')
@@ -286,8 +338,12 @@ def main():
                     print('The NER result is not found.')
                     config['previous_status'] = False
                     time.sleep(1)
-                    input("Press enter to continue...")
-                    continue
+                    try:
+                        input("Press enter to continue...")
+                        continue
+                    except EOFError:
+                        print("No input received, exit program...")
+                        sys.exit(0)
                 else:
                     # Load the NER results
                     timeline_file = open(config['output_dir'] +  '/ner_result.json')
@@ -301,22 +357,40 @@ def main():
                         print('Error in generating report.')
                         config['previous_status'] = False
                         time.sleep(1)
-                        input("Press enter to continue...")
-                        continue
+                        try:
+                            input("Press enter to continue...")
+                            continue
+                        except EOFError:
+                            print("No input received, exit program...")
+                            sys.exit(0)
                     else:
                         print('Report has generated successfully.')
-                        input("Press enter to continue...")
+                        try:
+                            input("Press enter to continue...")
+                            continue
+                        except EOFError:
+                            print("No input received, exit program...")
+                            sys.exit(0)
             else:
                 print('Please follow the steps accordingly')
                 time.sleep(1)
-                input("Press enter to continue...")
-                continue
+                try:
+                    input("Press enter to continue...")
+                    continue
+                except EOFError:
+                    print("No input received, exit program...")
+                    sys.exit(0)
         else:
             print('Invalid option!')
-            input("Press enter to continue...")
+            try:
+                input("Press enter to continue...")
+                continue
+            except EOFError:
+                print("No input received, exit program...")
+                sys.exit(0)
+        start = menu()
+    sys.exit(0)
 
-    with open(config['output_dir'] + '/config.json', 'w') as file:
-        json.dump(config, file)
 
 if __name__ == "__main__":
     main()
