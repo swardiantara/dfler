@@ -109,7 +109,6 @@ def main():
                 time.sleep(1)
                 try:
                     input("Press enter to continue...")
-                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -143,7 +142,6 @@ def main():
                 time.sleep(1)
             try:
                 input("Press enter to continue...")
-                continue
             except EOFError:
                 print("No input received, exit program...")
                 sys.exit(0)
@@ -153,7 +151,6 @@ def main():
                 time.sleep(1)
                 try:
                     input("Press enter to continue...")
-                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -213,7 +210,6 @@ def main():
                     time.sleep(1)
                     try:
                         input("Press enter to continue...")
-                        continue
                     except EOFError:
                         print("No input received, exit program...")
                         sys.exit(0)
@@ -237,7 +233,6 @@ def main():
                 print('Finish constructing timeline.')
                 try:
                     input("Press enter to continue...")
-                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -246,7 +241,6 @@ def main():
                 time.sleep(1)
                 try:
                     input("Press enter to continue...")
-                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -256,7 +250,6 @@ def main():
                 time.sleep(1)
                 try:
                     input("Press enter to continue...")
-                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -273,7 +266,6 @@ def main():
                     time.sleep(1)
                     try:
                         input("Press enter to continue...")
-                        continue
                     except EOFError:
                         print("No input received, exit program...")
                         sys.exit(0)
@@ -291,7 +283,6 @@ def main():
                         time.sleep(1)
                         try:
                             input("Press enter to continue...")
-                            continue
                         except EOFError:
                             print("No input received, exit program...")
                             sys.exit(0)
@@ -313,7 +304,6 @@ def main():
                         time.sleep(1)
                         try:
                             input("Press enter to continue...")
-                            continue
                         except EOFError:
                             print("No input received, exit program...")
                             sys.exit(0)
@@ -322,7 +312,6 @@ def main():
                 time.sleep(1)
                 try:
                     input("Press enter to continue...")
-                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -332,7 +321,6 @@ def main():
                 time.sleep(1)
                 try:
                     input("Press enter to continue...")
-                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -349,7 +337,6 @@ def main():
                     time.sleep(1)
                     try:
                         input("Press enter to continue...")
-                        continue
                     except EOFError:
                         print("No input received, exit program...")
                         sys.exit(0)
@@ -368,7 +355,6 @@ def main():
                         time.sleep(1)
                         try:
                             input("Press enter to continue...")
-                            continue
                         except EOFError:
                             print("No input received, exit program...")
                             sys.exit(0)
@@ -376,7 +362,6 @@ def main():
                         print('Report has generated successfully.')
                         try:
                             input("Press enter to continue...")
-                            continue
                         except EOFError:
                             print("No input received, exit program...")
                             sys.exit(0)
@@ -385,7 +370,6 @@ def main():
                 time.sleep(1)
                 try:
                     input("Press enter to continue...")
-                    continue
                 except EOFError:
                     print("No input received, exit program...")
                     sys.exit(0)
@@ -393,7 +377,6 @@ def main():
             print('Invalid option!')
             try:
                 input("Press enter to continue...")
-                continue
             except EOFError:
                 print("No input received, exit program...")
                 sys.exit(0)
