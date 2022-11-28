@@ -273,7 +273,6 @@ def build_source_evidence(config, report_html):
       <hr style="margin-top: -1em" />
       <ul class="content-color">
   """
-
   raw_list = open(config['output_dir'] + '/raw_list.json')
   raw_list = json.load(raw_list)
   flat_list = [item for sublist in raw_list for item in sublist]
