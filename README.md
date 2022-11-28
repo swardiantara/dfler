@@ -9,30 +9,23 @@ DFLER has three core features i.e., forensic timeline construction, entity recog
 Here is the folder structure of DFLER. There will be more files in `flight_logs` and `sample_output` folder, as we prepared a number of decrypted flight log files for input.
 
 ```
-flight_logs
-├── android
-├── ios
-model
-├── pytorch_model.bin
-├── model_args.json
-outputs
-sample_output
-├── parsed
-│   ├── android
-|	|	├── parsed_15-06-2018.csv
-|	|	├── parsed_19-06-2018-11VKF4U00200CZ.csv
-|	|	├── parsed_DJIFlightRecord_2018-06-15_(11-17-44).csv.csv
-│   ├── ios
-│   │   ├── parsed_14-045b34780500a6629d11a9560a89579381fcaa6b.csv
-│   │   └── parsed_36-0c456c1ec3064c65725ad399593e1c707d10f06c.csv
-.gitignore
-config.json
-dfler.py
-generate_report.py
-LICENSE
-parse.py
-README.md
-requirements.txt
+.
+├── flight_logs                 # Source evidence for input
+│   ├── android                 # Compiled files (alternatively `dist`)
+│   ├── ios                     # Compiled files (alternatively `dist`)
+├── model                       # To store the NER model
+├── outputs
+│   ├── 20221128_201545         # Generated folder to store output files
+├── sample_output               # Sample output of a successful execution.
+│   ├── parsed                  # Parsed message found in flight log
+├── .gitignore
+├── config.json                 # Some configuration parameter
+├── dfler.py                    # Main file to run
+├── generate_report.py          # Function to generate the forensic report
+├── LICENSE
+├── parse.py                    # Function to parse the flight log message
+├── README.md
+└── requirements.txt            # List of dependency packages
 ```
 
 ## How to run
