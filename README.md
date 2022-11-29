@@ -1,6 +1,6 @@
-# DFLER: Drone Flight Log Entity Extractor
+# DFLER: Drone Flight Log Entity Recognizer to Support Forensic Investigation on Drone Device
 
-DFLER is an automation tool to perform named entity recognition in drone flight log files, specifically flight logs that are acquired from controller devices which contain human-readable messages. We use our own annotated dataset to fine-tune a BERT-base model to build a NER model to support this tool.
+DFLER is an open-source CLI-based tool developed using Python programming language and supported by a fine-tuned BERT model to perform named entity recognition on drone flight log data, specifically the log messages. The BERT model is hosted on the HuggingFace platform to make it publicly available and accessible. The tool expects decrypted DJI flight log files as input and generates a forensic report in a PDF containing a forensic timeline with the highlighted parts on the mentioned entities in the log messages. The generated file can be used as an attachment to a complete forensic report and help the forensic investigator pinpoint critical events on the constructed forensic timeline.
 
 DFLER has three core features i.e., forensic timeline construction, entity recognition and forensic report generation. The needed input are flight log files that can be acquired from controller devices such as Android-based or iOS-based smartphone.
 
@@ -34,13 +34,15 @@ Before starting the tool, make sure all the dependencies listed in **requirement
 
 We have provided several flight log files that we extracted from Android- and iOS-based controller devices of VTO Labs drone forensic image [dataset](https://www.vtolabs.com/drone-forensics/) for samples. To perform named entity recognition, we need the fine-tuned BERT model. The mode is hosted on a public Huggingface repository. Clone the repository by issuing the command:
 
-> git lfs install
-> git clone https://huggingface.co/swardiantara/droner
+```bash
+git lfs install
+git clone https://huggingface.co/swardiantara/droner
+```
 
 After finish downloading the model, copy the model file (`pytorch_model.bin`) to the **`model`** folder.
 Having all the dependency packages, engine, model and input files prepared, simply run the command `python dfler.py` to run the tools. The results of every step will be saved into **`/outputs/yyyymmdd_HHMMSS`** folder.
 
-> **Note:** Run the step sequentially to avoid error, because every step is depending on the previous step.
+> **Note:** Run the step **sequentially** to avoid error, because every step is depending on the previous step.
 
 ## Sample Output
 
