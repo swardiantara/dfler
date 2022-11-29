@@ -11,8 +11,8 @@ Here is the folder structure of DFLER. There will be more files in `flight_logs`
 ```
 .
 ├── flight_logs                 # Source evidence for input
-│   ├── android                 # Compiled files (alternatively `dist`)
-│   ├── ios                     # Compiled files (alternatively `dist`)
+│   ├── android
+│   ├── ios
 ├── model                       # To store the NER model
 ├── outputs
 │   ├── 20221128_201545         # Generated folder to store output files
