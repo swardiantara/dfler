@@ -53,15 +53,15 @@ def clear_screen():
 
 def menu():
     clear_screen()
+    print("\t\t====================================================================")
+    print("\t\t==============   Drone Flight Log Entity Recognizer   ==============")
     print("\t\t====================================================================\n")
-    print("\t\t================ Drone Flight Log Entity Recognizer ================\n")
-    print("\t\t====================================================================\n\n")
     print("\t\tAction to perform:\n")
-    print("\t\t\t1. Evidence Checking\n")
-    print("\t\t\t2. Forensic Timeline Construction\n")
-    print("\t\t\t3. Drone Entity Recognition\n")
-    print("\t\t\t4. Forensic Report Generation\n")
-    print("\t\t\t0. Exit\n\n")
+    print("\t\t\t1. Evidence Checking")
+    print("\t\t\t2. Forensic Timeline Construction")
+    print("\t\t\t3. Drone Entity Recognition")
+    print("\t\t\t4. Forensic Report Generation")
+    print("\t\t\t0. Exit\n")
     try:
         option = input("\t\tEnter option: ")
     except EOFError:
