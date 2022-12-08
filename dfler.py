@@ -18,7 +18,7 @@ def get_config():
     config_file = json.load(config_file)
 
     now = datetime.now()
-    now = now.strftime("%d%m%Y_%H%M%S")
+    now = now.strftime("%Y%m%d_%H%M%S")
     output_dir = os.path.join(config_file['output_dir'], now)
     # output_dir = os.path.join(config_file['output_dir'], '27112022_190057')
     previous_step = 0
@@ -40,7 +40,8 @@ def get_config():
         "previous_status": previous_status,
         "wkhtml_path": wkhtml_path,
         "app_version": config_file['app_version'],
-        "use_cuda": use_cuda
+        "use_cuda": use_cuda,
+        "evidence_dir": config_file['source_evidence'],
     }
 
 def clear_screen():
@@ -98,10 +99,10 @@ def main():
             time.sleep(1)
             config['previous_step'] = 1
             
-            files = os.listdir('flight_logs')
+            files = os.listdir(config['evidence_dir'])
             android_logs = []
             ios_logs = []
-            folders = [d for d in files if os.path.isdir('flight_logs'+'/'+d)]
+            folders = [d for d in files if os.path.isdir(config['evidence_dir']+'/'+d)]
             # print(folders)
             if(len(folders) == 0):
                 print("No sub-folders in the evidence folder")
@@ -115,8 +116,8 @@ def main():
             else: 
                 for folder in folders:
                     # Filtering only the files.
-                    files = os.listdir('flight_logs/'+folder)
-                    files = [f for f in files if os.path.isfile('flight_logs/'+folder+'/'+f)]
+                    files = os.listdir(config['evidence_dir']+'/'+folder)
+                    files = [f for f in files if os.path.isfile(config['evidence_dir']+'/'+folder+'/'+f)]
                     if(folder == 'android'):
                         android_logs.append(files)
                     else:
@@ -163,11 +164,11 @@ def main():
                 android_path = os.path.join(config['output_dir'], 'parsed/android')
                 os.makedirs(config['output_dir'] + '/parsed/ios')
                 ios_path = os.path.join(config['output_dir'], 'parsed/ios')
-                full_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'flight_logs')
+                full_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), config['evidence_dir'])
                 
                 # Construct the forensic timeline from parsed flight log
                 # print(full_path)
-                # print(os.path.join(dir_path, 'flight_logs'))
+                # print(os.path.join(dir_path, config['evidence_dir']))
                 path_list = []
                 ios_parsed = False
                 android_parsed = False
