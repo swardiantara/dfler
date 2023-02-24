@@ -1,4 +1,4 @@
-# DFLER: Drone Flight Log Entity Recognizer to Support Forensic Investigation on Drone Device
+# [DFLER: Drone Flight Log Entity Recognizer to Support Forensic Investigation on Drone Device](https://www.sciencedirect.com/science/article/pii/S2665963822001415)
 
 DFLER is an open-source CLI-based tool developed using Python programming language and supported by a fine-tuned BERT model to perform named entity recognition on drone flight log data, specifically the log messages. The BERT model is hosted on the HuggingFace platform to make it publicly available and accessible. The tool expects decrypted DJI flight log files as input and generates a forensic report in a PDF containing a forensic timeline with the highlighted parts on the mentioned entities in the log messages. The generated file can be used as an attachment to a complete forensic report and help the forensic investigator pinpoint critical events on the constructed forensic timeline.
 
